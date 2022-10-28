@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.extern.java.Log;
 
 @RestController
@@ -21,8 +22,9 @@ public class CurrencyConversionController {
 	private CurrencyExchangeServiceProxy proxy;
 
 	@GetMapping("/currency-converter/from/{from}/to/{to}/quantity/{quantity}")
-	public CurrencyConversionBean convertCurrency(@PathVariable String from, @PathVariable String to,
-			@PathVariable BigDecimal quantity) {
+	public CurrencyConversionBean convertCurrency(@Parameter(description="Desde que se va a convertir", example = "EUR") @PathVariable String from,
+										@Parameter(description="A que se va a convertir", example = "INR") @PathVariable String to,
+										@Parameter(description="Cantidad a convertir", example = "200") @PathVariable BigDecimal quantity) {
 
 		Map<String, String> uriVariables = new HashMap<>();
 		uriVariables.put("from", from);
@@ -39,8 +41,9 @@ public class CurrencyConversionController {
 	}
 
 	@GetMapping("/currency-converter-feign/from/{from}/to/{to}/quantity/{quantity}")
-	public CurrencyConversionBean convertCurrencyFeign(@PathVariable String from, @PathVariable String to,
-			@PathVariable BigDecimal quantity) {
+	public CurrencyConversionBean convertCurrencyFeign(@Parameter(description="Desde que se va a convertir", example = "EUR") @PathVariable String from,
+														@Parameter(description="A que se va a convertir", example = "INR") @PathVariable String to,
+														@Parameter(description="Cantidad a convertir", example = "200") @PathVariable BigDecimal quantity) {
 
 		CurrencyConversionBean response = proxy.retrieveExchangeValue(from, to);
 
